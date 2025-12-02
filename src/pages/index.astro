@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore the latest insights on AI, automation, and emerging technologies. Expert analysis and practical guides for tech professionals." />
+    <title>AI & Automation Blog - Latest Insights & Trends</title>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm border-b">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <a href="/" class="text-2xl font-bold text-blue-600 hover:text-blue-700">
+          AI & Automation Blog
+        </a>
+      </div>
+    </nav>
+
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+      <div class="max-w-6xl mx-auto px-4 py-20 text-center">
+        <h1 class="text-5xl font-bold mb-6">AI & Automation Insights</h1>
+        <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+          Exploring the future of artificial intelligence, automation, and emerging technologies
+        </p>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <article class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div class="p-6">
+              <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <time datetime={post.data.date}>
+                  {new Date(post.data.date).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
+                </time>
+              </div>
+
+              <h2 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                <a href={`/blog/${post.slug}`}>
+                  {post.data.title}
+                </a>
+              </h2>
+
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                {post.data.description}
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-4">
+                {post.data.tags.slice(0, 3).map((tag) => (
+                  <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+
+              <a 
+                href={`/blog/${post.slug}`}
+                class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+              >
+                Read more
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+
+    <footer class="bg-white border-t mt-20">
+      <div class="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600">
+        <p>&copy; {new Date().getFullYear()} AI & Automation Blog. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
