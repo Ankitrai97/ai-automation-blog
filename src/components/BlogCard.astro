@@ -1,0 +1,40 @@
+---
+interface Props {
+  title: string;
+  date: string;
+  tags: string[];
+}
+
+const { title, date, tags } = Astro.props;
+---
+
+<article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+  <div class="p-6">
+    <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <time datetime={date}>
+        {new Date(date).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        })}
+      </time>
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+      {title}
+    </h2>
+
+    <div class="flex flex-wrap gap-2 mb-4">
+      {tags.slice(0, 3).map((tag) => (
+        <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+          #{tag}
+        </span>
+      ))}
+    </div>
+
+    <slot />
+  </div>
+</article>
